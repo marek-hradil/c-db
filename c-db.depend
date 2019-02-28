@@ -1,0 +1,53 @@
+# depslib dependency file v1.0
+1550268731 source:c:\users\techfides\desktop\ownprojects\c-db\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1550268769 source:c:\users\techfides\desktop\ownprojects\c-db\dbaccessor.c
+	<stdio.h>
+	<stdlib.h>
+	<dirent.h>
+	"file_paths.h"
+
+1550334299 source:c:\users\techfides\desktop\ownprojects\c-db\queryparser.c
+	<stdio.h>
+	<stdlib.h>
+	"consts.h"
+
+1550268877 source:c:\users\techfides\desktop\ownprojects\c-db\selectqueryparser.c
+	<stdio.h>
+	<stdlib.h>
+	"consts.h"
+	"column_types.h"
+	"table.h"
+	"query_types.h"
+
+1549538036 c:\users\techfides\desktop\ownprojects\c-db\column.h
+	"column_types.h"
+
+1549224556 c:\users\techfides\desktop\ownprojects\c-db\column_types.h
+
+1549224669 c:\users\techfides\desktop\ownprojects\c-db\consts.h
+
+1550257668 c:\users\techfides\desktop\ownprojects\c-db\table.h
+	"column.h"
+	"table_info.h"
+
+1550256681 c:\users\techfides\desktop\ownprojects\c-db\table_info.h
+
+1551354354 source:c:\users\techfides\desktop\ownprojects\c-db\dbcreator.c
+	<stdio.h>
+	<stdlib.h>
+	"column.h"
+	"column_types.h"
+	"table.h"
+	"table_info.h"
+	"file_paths.h"
+	"file_type.h"
+
+1550265398 c:\users\techfides\desktop\ownprojects\c-db\file_paths.h
+
+1550265346 c:\users\techfides\desktop\ownprojects\c-db\file_type.h
+
+1550268425 c:\users\techfides\desktop\ownprojects\c-db\query_types.h
+

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="c-db" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/c-db" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/c-db" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="column.h" />
+		<Unit filename="column_types.h" />
+		<Unit filename="consts.h" />
+		<Unit filename="dbAccessor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="dbCreator.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="file_paths.h" />
+		<Unit filename="file_type.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="queryParser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="query_types.h" />
+		<Unit filename="selectQueryParser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="table.h" />
+		<Unit filename="table_info.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

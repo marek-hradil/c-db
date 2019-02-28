@@ -1,0 +1,6 @@
+#ifndef FILE_PATHS_H_INCLUDED
+#define FILE_PATHS_H_INCLUDED
+
+#define CATALOGUE_DIR "dbs"
+
+#endif // FILE_PATHS_H_INCLUDED
