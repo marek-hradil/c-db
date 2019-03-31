@@ -1,25 +1,21 @@
 # depslib dependency file v1.0
-1553852357 source:c:\users\techfides\desktop\ownprojects\c-db\main.c
+1554042862 source:c:\users\techfides\desktop\ownprojects\c-db\main.c
 	<stdio.h>
 	<stdlib.h>
-	"compiled_query.h"
-	"table.h"
-	"column_types.h"
-	"column.h"
 
-1551354705 source:c:\users\techfides\desktop\ownprojects\c-db\dbaccessor.c
+1551358305 source:c:\users\techfides\desktop\ownprojects\c-db\dbaccessor.c
 	<stdio.h>
 	<stdlib.h>
 	<dirent.h>
 	"file_paths.h"
 	"file_type.h"
 
-1553774943 source:c:\users\techfides\desktop\ownprojects\c-db\queryparser.c
+1553778543 source:c:\users\techfides\desktop\ownprojects\c-db\queryparser.c
 	<stdio.h>
 	<stdlib.h>
 	"consts.h"
 
-1553851736 source:c:\users\techfides\desktop\ownprojects\c-db\selectqueryparser.c
+1553855336 source:c:\users\techfides\desktop\ownprojects\c-db\selectqueryparser.c
 	<stdio.h>
 	<stdlib.h>
 	"consts.h"
@@ -28,21 +24,21 @@
 	"query_types.h"
 	"compiled_query.h"
 
-1552029213 c:\users\techfides\desktop\ownprojects\c-db\column.h
+1552032813 c:\users\techfides\desktop\ownprojects\c-db\column.h
 	"column_types.h"
 
-1549224556 c:\users\techfides\desktop\ownprojects\c-db\column_types.h
+1554043524 c:\users\techfides\desktop\ownprojects\c-db\column_types.h
 
-1553851748 c:\users\techfides\desktop\ownprojects\c-db\consts.h
+1553855348 c:\users\techfides\desktop\ownprojects\c-db\consts.h
 
-1551773198 c:\users\techfides\desktop\ownprojects\c-db\table.h
+1551776798 c:\users\techfides\desktop\ownprojects\c-db\table.h
 	"column.h"
 	"table_info.h"
 	"consts.h"
 
-1550256681 c:\users\techfides\desktop\ownprojects\c-db\table_info.h
+1550260281 c:\users\techfides\desktop\ownprojects\c-db\table_info.h
 
-1553775115 source:c:\users\techfides\desktop\ownprojects\c-db\dbcreator.c
+1554043696 source:c:\users\techfides\desktop\ownprojects\c-db\dbcreator.c
 	<stdio.h>
 	<stdlib.h>
 	"column.h"
@@ -53,14 +49,27 @@
 	"file_type.h"
 	"compiled_query.h"
 
-1550265398 c:\users\techfides\desktop\ownprojects\c-db\file_paths.h
+1550268998 c:\users\techfides\desktop\ownprojects\c-db\file_paths.h
 
-1550265346 c:\users\techfides\desktop\ownprojects\c-db\file_type.h
+1550268946 c:\users\techfides\desktop\ownprojects\c-db\file_type.h
 
-1550268425 c:\users\techfides\desktop\ownprojects\c-db\query_types.h
+1550272025 c:\users\techfides\desktop\ownprojects\c-db\query_types.h
 
-1553850443 c:\users\techfides\desktop\ownprojects\c-db\compiled_query.h
+1554029124 c:\users\techfides\desktop\ownprojects\c-db\compiled_query.h
 	"query_types.h"
 	"consts.h"
+	"compiled_column.h"
+
+1554026237 c:\users\techfides\desktop\ownprojects\c-db\compiled_column.h
+	"column_types.h"
 	"column.h"
+
+1554043763 source:c:\users\techfides\desktop\ownprojects\c-db\testinsert.c
+	<stdio.h>
+	<stdlib.h>
+	"compiled_query.h"
+	"table.h"
+	"column_types.h"
+	"column.h"
+	"compiled_column.h"
 

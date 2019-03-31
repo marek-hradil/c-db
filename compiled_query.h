@@ -3,12 +3,12 @@
 
 #include "query_types.h"
 #include "consts.h"
-#include "column.h"
+#include "compiled_column.h"
 
 typedef struct {
-    Column * queryColumns[TABLE_MAX_COLUMNS_LENGTH];
+    CompiledColumn * queryColumns[TABLE_MAX_COLUMNS_LENGTH];
+    int columnCount;
     QueryTypes type;
-    char * queryValues[TABLE_MAX_COLUMNS_LENGTH];
     char * target;
 } CompiledQuery;
 

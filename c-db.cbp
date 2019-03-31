@@ -33,6 +33,7 @@
 		</Compiler>
 		<Unit filename="column.h" />
 		<Unit filename="column_types.h" />
+		<Unit filename="compiled_column.h" />
 		<Unit filename="compiled_query.h" />
 		<Unit filename="consts.h" />
 		<Unit filename="dbAccessor.c">
@@ -55,6 +56,9 @@
 		</Unit>
 		<Unit filename="table.h" />
 		<Unit filename="table_info.h" />
+		<Unit filename="testInsert.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

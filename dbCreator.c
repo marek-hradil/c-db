@@ -166,29 +166,29 @@ int deleteTable(char * tableName)
 int insert(CompiledQuery * compiledQuery, Table * table, FILE * dataFile)
 {
     int i = 0;
-    for (i = 0; i < TABLE_MAX_COLUMNS_LENGTH; i++)
+    for (i = 0; i < table->info.columnCount; i++)
     {
         int j = 0;
         int isPaired = 0;
-        for (j = 0; j < TABLE_MAX_COLUMNS_LENGTH; j++)
+        for (j = 0; j < compiledQuery->columnCount; j++)
         {
-            if (isPaired == 0 && strcmp(table->columns[j]->name, compiledQuery->queryColumns[i]->name))
+            printf("%s = %s \n",table->columns[j]->name, compiledQuery->queryColumns[i]->name);
+            if (isPaired == 0 && strcmp(table->columns[j]->name, compiledQuery->queryColumns[i]->name) == 0)
             {
                 switch(table->columns[j]->type) {
                     case VARCHAR: {
                         // Default VARCHAR 70
                         // TODO: Support various length of columns
-                        char val[70];
-                        strcpy(val, &compiledQuery->queryValues[i]);
-                        fwrite(val, sizeof(char[70]), 1, dataFile);
+                        char val[VARCHAR_DEFAULT_LENGTH];
+                        strcpy(val, compiledQuery->queryColumns[i]->value);
+                        fwrite(val, sizeof(char[VARCHAR_DEFAULT_LENGTH]), 1, dataFile);
                     } break;
 
                     case INT: {
-                        // Default INT 8
-                        // TODO: Handle wrong type of input
-                        char val[8];
-                        strcpy(val, &compiledQuery->queryValues[i]);
-                        fwrite(atoi(val[8]), sizeof(int), 1, dataFile);
+                        char val[INT_DEFAULT_LENGTH];
+                        strcpy(val, compiledQuery->queryColumns[i]->value);
+                        int intVal = atoi(val);
+                        fwrite(&intVal, sizeof(int), 1, dataFile);
                     } break;
 
                     default: {
@@ -204,11 +204,15 @@ int insert(CompiledQuery * compiledQuery, Table * table, FILE * dataFile)
         if (isPaired == 0) {
             switch(table->columns[j]->type) {
                 case VARCHAR: {
-                    fwrite(0, sizeof(char[70]), 1, dataFile);
+                    char val[VARCHAR_DEFAULT_LENGTH];
+                    memset(val, "\0", sizeof(val));
+                    fwrite(val, sizeof(char[70]), 1, dataFile);
                 } break;
 
                 case INT: {
-                    fwrite(0, sizeof(int), 1, dataFile);
+                    int val = 0;
+                    printf("were here");
+                    fwrite(&val, sizeof(int), 1, dataFile);
                 } break;
 
                 default: {
