@@ -5,13 +5,7 @@
 #include "column_types.h"
 #include "table.h"
 #include "query_types.h"
-
-typedef struct {
-    char * columns[TABLE_MAX_COLUMNS_LENGTH];
-    QueryTypes type;
-    char * values[TABLE_MAX_COLUMNS_LENGTH];
-    char * from;
-} CompiledQuery;
+#include "compiled_query.h"
 
 CompiledQuery getRequestFromSelectQuery(char* query)
 {
@@ -29,8 +23,8 @@ CompiledQuery getRequestFromSelectQuery(char* query)
 
     while (pch != NULL)
     {
-        strcpy(compiledQuery.columns[index], pch);
-        printf("%s", compiledQuery.columns[index]);
+        strcpy(compiledQuery.queryColumns[index], pch);
+        printf("%s", compiledQuery.queryColumns[index]->name);
         index += 1;
         pch = strtok(NULL, ", ");
     }

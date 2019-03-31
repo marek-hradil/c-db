@@ -1,7 +1,6 @@
 #include "column.h"
 #include "table_info.h"
-
-#define TABLE_MAX_COLUMNS_LENGTH 100
+#include "consts.h"
 
 #ifndef TABLE_INCLUDED_
 #define TABLE_INCLUDED_

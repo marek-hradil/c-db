@@ -7,6 +7,7 @@
 #include "table_info.h"
 #include "file_paths.h"
 #include "file_type.h"
+#include "compiled_query.h"
 
 extern getHeaderFile();
 extern getDataFile();
@@ -68,11 +69,12 @@ Table * readHeadTable (FILE * headerFile)
     return newTable;
 }
 
-int addColumnToTable(char * columnName, ColumnTypes columnType, char * tableName)
+int addColumn(char * columnName, ColumnTypes columnType, char * tableName)
 {
     FILE * headerFile = getHeaderFile(tableName, "rb");
     if (headerFile == NULL)
     {
+        printf("Couldn't get header file. Aborting.");
         return -1;
     }
 
@@ -92,6 +94,29 @@ int addColumnToTable(char * columnName, ColumnTypes columnType, char * tableName
     fclose(headerFile);
 
     return 0;
+}
+
+int deleteColumn(char * columnName, char * tableName)
+{
+    FILE * headerFile = getHeaderFile(tableName, "rb");
+    if (headerFile == NULL)
+    {
+        printf("Couldn't get header file. Aborting.");
+        return -1;
+    }
+
+    Table * table = readHeadTable(headerFile);
+    Column newColumns[table->info.columnCount];
+    int i = 0;
+    for (i = 0; i < table->info.columnCount; i++)
+    {
+        if (strcmp(&table->columns[i]->name, columnName))
+        {
+
+        }
+    }
+
+    // TODO: Remove from data file!
 }
 
 int initTable(char * tableName)
@@ -136,4 +161,63 @@ int deleteTable(char * tableName)
     }
 
     return 0;
+}
+
+int insert(CompiledQuery * compiledQuery, Table * table, FILE * dataFile)
+{
+    int i = 0;
+    for (i = 0; i < TABLE_MAX_COLUMNS_LENGTH; i++)
+    {
+        int j = 0;
+        int isPaired = 0;
+        for (j = 0; j < TABLE_MAX_COLUMNS_LENGTH; j++)
+        {
+            if (isPaired == 0 && strcmp(table->columns[j]->name, compiledQuery->queryColumns[i]->name))
+            {
+                switch(table->columns[j]->type) {
+                    case VARCHAR: {
+                        // Default VARCHAR 70
+                        // TODO: Support various length of columns
+                        char val[70];
+                        strcpy(val, &compiledQuery->queryValues[i]);
+                        fwrite(val, sizeof(char[70]), 1, dataFile);
+                    } break;
+
+                    case INT: {
+                        // Default INT 8
+                        // TODO: Handle wrong type of input
+                        char val[8];
+                        strcpy(val, &compiledQuery->queryValues[i]);
+                        fwrite(atoi(val[8]), sizeof(int), 1, dataFile);
+                    } break;
+
+                    default: {
+                        printf("Insert aborted, unknown type.");
+                        return -1;
+                    }
+                }
+
+                isPaired = 1;
+            }
+        }
+
+        if (isPaired == 0) {
+            switch(table->columns[j]->type) {
+                case VARCHAR: {
+                    fwrite(0, sizeof(char[70]), 1, dataFile);
+                } break;
+
+                case INT: {
+                    fwrite(0, sizeof(int), 1, dataFile);
+                } break;
+
+                default: {
+                    printf("Insert aborted, unknown type.");
+                    return -1;
+                }
+            }
+        }
+    }
+
+    return 1;
 }

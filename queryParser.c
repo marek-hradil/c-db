@@ -15,14 +15,7 @@ void getRequestFromQuery()
 
     keyword = strtok_r(queryCopy, " ", &queryCopy);
 
-    char select[6] = "SELECT";
-
-    if (strcmp(keyword,select) != 0)
-    {
-        getRequestFromSelectQuery(queryCopy);
-    }
-    else
-    {
-        printf("Unknown command");
+    if (strcmp(keyword, "SELECT")) {
+        getRequestFromSelectQuery();
     }
 }

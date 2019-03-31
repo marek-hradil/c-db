@@ -33,6 +33,7 @@
 		</Compiler>
 		<Unit filename="column.h" />
 		<Unit filename="column_types.h" />
+		<Unit filename="compiled_query.h" />
 		<Unit filename="consts.h" />
 		<Unit filename="dbAccessor.c">
 			<Option compilerVar="CC" />
