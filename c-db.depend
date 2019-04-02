@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1554042862 source:c:\users\techfides\desktop\ownprojects\c-db\main.c
+1554152324 source:c:\users\techfides\desktop\ownprojects\c-db\main.c
 	<stdio.h>
 	<stdlib.h>
 
@@ -36,9 +36,9 @@
 	"table_info.h"
 	"consts.h"
 
-1550260281 c:\users\techfides\desktop\ownprojects\c-db\table_info.h
+1554146996 c:\users\techfides\desktop\ownprojects\c-db\table_info.h
 
-1554043696 source:c:\users\techfides\desktop\ownprojects\c-db\dbcreator.c
+1554066528 source:c:\users\techfides\desktop\ownprojects\c-db\dbcreator.c
 	<stdio.h>
 	<stdlib.h>
 	"column.h"
@@ -60,11 +60,32 @@
 	"consts.h"
 	"compiled_column.h"
 
-1554026237 c:\users\techfides\desktop\ownprojects\c-db\compiled_column.h
+1554148549 c:\users\techfides\desktop\ownprojects\c-db\compiled_column.h
 	"column_types.h"
 	"column.h"
 
-1554043763 source:c:\users\techfides\desktop\ownprojects\c-db\testinsert.c
+1554152219 source:c:\users\techfides\desktop\ownprojects\c-db\testinsert.c
+	<stdio.h>
+	<stdlib.h>
+	"compiled_query.h"
+	"table.h"
+	"column_types.h"
+	"column.h"
+	"compiled_column.h"
+
+1554151480 source:c:\users\techfides\desktop\ownprojects\c-db\insert.c
+	<stdio.h>
+	<stdlib.h>
+	"compiled_query.h"
+	"table.h"
+
+1554150911 source:c:\users\techfides\desktop\ownprojects\c-db\select.c
+	<stdio.h>
+	<stdlib.h>
+	"compiled_query.h"
+	"table.h"
+
+1554152283 source:c:\users\techfides\desktop\ownprojects\c-db\testselect.c
 	<stdio.h>
 	<stdlib.h>
 	"compiled_query.h"

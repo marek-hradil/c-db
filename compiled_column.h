@@ -6,7 +6,6 @@
 
 typedef struct {
     char * name;
-    ColumnTypes type;
     char * value;
 } CompiledColumn;
 

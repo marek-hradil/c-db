@@ -44,6 +44,9 @@
 		</Unit>
 		<Unit filename="file_paths.h" />
 		<Unit filename="file_type.h" />
+		<Unit filename="insert.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -51,12 +54,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="query_types.h" />
+		<Unit filename="select.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="selectQueryParser.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="table.h" />
 		<Unit filename="table_info.h" />
 		<Unit filename="testInsert.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="testSelect.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

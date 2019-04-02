@@ -7,6 +7,7 @@ typedef struct {
     char name[TABLE_INFO_MAX_NAME_LENGTH];
     int rowCount;
     int columnCount;
+    int rowSize;
 } TableInfo;
 
 #endif // TABLE_INFO_INCLUDED_

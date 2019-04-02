@@ -2,10 +2,11 @@
 #include <stdlib.h>
 
 extern int testInsert();
+extern int testSelect();
 
 int main()
 {
-    testInsert();
+    testSelect();
     return 0;
 }
 
