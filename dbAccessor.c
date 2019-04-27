@@ -1,52 +1,88 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <string.h>
 
 #include "file_paths.h"
 #include "file_type.h"
 
-int connectToDbSequence (db)
+extern void log(char * msg);
+
+char databasePath[100];
+
+void setDb(char * name)
+{
+    strcpy(databasePath, name);
+}
+
+char * getDb()
+{
+    char * ptr = databasePath;
+    return ptr;
+}
+
+void setFilePath(char * tableName, int type, char tablePath[100])
+{
+    strcpy(tablePath, databasePath);
+    strcat(tablePath, "/");
+    strcat(tablePath, tableName);
+    if (type == HEADER) {
+        strcat(tablePath, "_HEAD");
+    }
+    strcat(tablePath, ".dat");
+}
+
+int removeHeaderFile(char * tableName)
+{
+    char tablePath[100];
+    setFilePath(tableName, HEADER, tablePath);
+    int status = remove(tablePath);
+    return status;
+}
+
+int removeDataFile(char * tableName)
+{
+    char tablePath[100];
+    setFilePath(tableName, DATA, tablePath);
+    int status = remove(tableName);
+    return status;
+}
+
+int connectToDbSequence()
 {
     printf("Connect to DB: \n");
-    DIR *catalogue;
+    DIR * catalogue;
     catalogue = opendir(CATALOGUE_DIR);
 
     listDbsFromCatalogue(catalogue);
 
-    connectToDb(db);
+    connectToDb(catalogue);
 
     close(catalogue);
 }
 
-char * getHeaderFilePath(char * tableName)
+FILE * getHeaderFile (char * tableName, char * mode)
 {
-    char * tablePath;
-    setFilePath(tableName, tablePath, HEADER);
-    return tablePath;
-}
-
-char * getDataFilePath(char * tableName)
-{
-    char * tablePath;
-    setFilePath(tableName, tablePath, DATA);
-    return tablePath;
-}
-
-FILE * getHeaderFile (char * tableName, char mode[2])
-{
-    FILE * headerFile;
-    char * tablePath = getHeaderFilePath(tableName);
-    headerFile = fopen(tablePath, mode);
+    char tablePath[100];
+    setFilePath(tableName, HEADER, tablePath);
+    FILE * headerFile = fopen(tablePath, mode);
+    if (headerFile == NULL)
+    {
+        printf("Couldn't get header file at this path: %s\n", tablePath);
+    }
 
     return headerFile;
 }
 
-FILE * getDataFile (char * tableName, char mode[2])
+FILE * getDataFile (char * tableName, char * mode)
 {
-    FILE * dataFile;
-    char * tablePath = getDataFilePath(tableName);
-    dataFile = fopen(tablePath, mode);
-
+    char tablePath[100];
+    setFilePath(tableName, DATA, tablePath);
+    FILE * dataFile = fopen(tablePath, mode);
+    if (dataFile == NULL)
+    {
+        printf("Couldn't get data file at this path: %s\n", tablePath);
+    }
     return dataFile;
 }
 
@@ -62,6 +98,7 @@ int listDbsFromCatalogue (DIR *catalogue)
                 printf("\t %s \n",db->d_name);
             }
         }
+        free(db);
         return 0;
     }
     else
@@ -81,12 +118,13 @@ int connectToDb(DIR * catalogue)
         scanf("%256s", dbName);
 
         char dbPath[300];
-        strcpy(dbPath, CATALOGUE_DIR);
+        strcpy(dbPath, "./");
+        strcat(dbPath, CATALOGUE_DIR);
         strcat(dbPath, "/");
         strcat(dbPath, dbName);
 
         if ((db = opendir(dbPath)) != NULL) {
-
+            setDb(dbPath);
         }
 
         if (db == NULL)
@@ -102,19 +140,8 @@ int connectToDb(DIR * catalogue)
             }
         }
     } while (db == NULL);
+    free(db);
     printf("\nConnected.");
 
     return 0;
-}
-
-void setFilePath(char * tableName, char tablePath[200], int type)
-{
-    strcpy(tablePath, "./");
-    strcat(tablePath, CATALOGUE_DIR);
-    strcat(tablePath, "/");
-    strcat(tablePath, tableName);
-    if (type == HEADER) {
-        strcat(tablePath, "_HEAD");
-    }
-    strcat(tablePath, ".dat");
 }

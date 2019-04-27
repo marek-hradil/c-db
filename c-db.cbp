@@ -42,9 +42,22 @@
 		<Unit filename="dbCreator.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="delete.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="expression.h" />
 		<Unit filename="file_paths.h" />
 		<Unit filename="file_type.h" />
+		<Unit filename="helpers.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="insert.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="insertQueryParser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="logger.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.c">
@@ -66,6 +79,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="testSelect.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

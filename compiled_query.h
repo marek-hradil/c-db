@@ -7,8 +7,8 @@
 
 typedef struct {
     CompiledColumn * queryColumns[TABLE_MAX_COLUMNS_LENGTH];
-    int columnCount;
     QueryTypes type;
+    int columnCount;
     char * target;
 } CompiledQuery;
 

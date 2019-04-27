@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "column.h"
 #include "column_types.h"
@@ -9,13 +10,15 @@
 #include "file_type.h"
 #include "compiled_query.h"
 
-extern getHeaderFile();
-extern getDataFile();
+extern FILE * getHeaderFile(char * tableName, char mode[2]);
+extern FILE * getDataFile(char * tableName, char mode[2]);
+extern int removeDataFile(char * tableName);
+extern int removeHeaderFile(char * tableName);
+extern void log(char * msg);
 
 int generateHeadFile(Table * table)
 {
     FILE * newHeaderFile = getHeaderFile(table->info.name, "wb");
-
     if (newHeaderFile == NULL)
     {
         printf("Could not create new header file");
@@ -23,10 +26,10 @@ int generateHeadFile(Table * table)
         return -1;
     }
 
-    printf("Header file created successfully.");
-
     fwrite(&table->info, sizeof(TableInfo), 1, newHeaderFile);
     fclose(newHeaderFile);
+
+    printf("Header file created successfully");
 
     return 0;
 }
@@ -42,13 +45,19 @@ int generateDataFile(Table * table)
         return -1;
     }
 
+    fclose(newDataFile);
+
+    printf("Data file created successfully");
+
     return 0;
 }
 
 Column * buildNewColumn(char * name, ColumnTypes type)
 {
-    Column * newColumn;
-    newColumn = malloc(sizeof(Column));
+    Column * newColumn = malloc(sizeof(Column));
+    if (newColumn == NULL) {
+        log("Column alloc failed.");
+    }
     strcpy(newColumn->name, name);
     newColumn->type = type;
 
@@ -57,8 +66,10 @@ Column * buildNewColumn(char * name, ColumnTypes type)
 
 Table * readHeadTable (FILE * headerFile)
 {
-    Table * newTable;
-    newTable = malloc(sizeof(Table));
+    Table * newTable = malloc(sizeof(Table));
+    if (newTable == NULL) {
+        log("Table alloc failed");
+    }
     fread(&newTable->info, sizeof(TableInfo), 1, headerFile);
     int i = 0;
     while (fread(&newTable->columns[i], sizeof(Column), 1, headerFile) > 0)
@@ -77,21 +88,29 @@ int addColumn(char * columnName, ColumnTypes columnType, char * tableName)
         printf("Couldn't get header file. Aborting.");
         return -1;
     }
-
     Table * table = readHeadTable(headerFile);
-
     table->columns[table->info.columnCount] = buildNewColumn(columnName, columnType);
     table->info.columnCount += 1;
 
-    headerFile = getHeaderFile(tableName, "wb");
-    fwrite(&table->info, sizeof(TableInfo), 1, headerFile);
-    int i;
-    for (i = 0; i < table->info.columnCount; i++)
+    if (columnType == VARCHAR)
     {
-        fwrite(table->columns[i], sizeof(Column), 1, headerFile);
+        table->info.rowSize += sizeof(char[VARCHAR_DEFAULT_LENGTH]);
+    }
+    else if (columnType == INT)
+    {
+        table->info.rowSize += sizeof(int);
     }
 
     fclose(headerFile);
+    headerFile = getHeaderFile(tableName, "wb");
+    fwrite(&table->info, sizeof(TableInfo), 1, headerFile);
+    int i = 0;
+    for (i = 0; i < table->info.columnCount; i++)
+    {
+        fwrite(&table->columns[i], sizeof(Column), 1, headerFile);
+    }
+    fclose(headerFile);
+    free(table);
 
     return 0;
 }
@@ -110,7 +129,7 @@ int deleteColumn(char * columnName, char * tableName)
     int i = 0;
     for (i = 0; i < table->info.columnCount; i++)
     {
-        if (strcmp(&table->columns[i]->name, columnName))
+        if (strcmp(&table->columns[i]->name, columnName) == 0)
         {
 
         }
@@ -121,33 +140,21 @@ int deleteColumn(char * columnName, char * tableName)
 
 int initTable(char * tableName)
 {
-    Table table;
-    table.info.rowCount = 0;
-    table.info.columnCount = 0;
-    strcpy(table.info.name, tableName);
+    Table * table = malloc(sizeof(Table));
+    table->info.rowCount = 0;
+    table->info.columnCount = 0;
+    table->info.rowSize = 0;
+    strcpy(table->info.name, tableName);
 
-    int headerFileCreated = generateHeadFile(&table);
-    int dataFileCreated = generateDataFile(&table);
+    int headerFileCreated = generateHeadFile(table);
+    int dataFileCreated = generateDataFile(table);
+    free(table);
 
     if (headerFileCreated == 0 && dataFileCreated == 0)
     {
         return 0;
     }
     return -1;
-}
-
-int removeHeaderFile(char * tableName)
-{
-    char * tablePath = getHeaderFilePath(tableName);
-    int status = remove(tablePath);
-    return status;
-}
-
-int removeDataFile(char * tableName)
-{
-    char * tablePath = getDataFilePath(tableName);
-    int status = remove(tableName);
-    return status;
 }
 
 int deleteTable(char * tableName)
@@ -173,7 +180,7 @@ int getRowCount(char * tableName, int rowSize)
     }
 
     fseek(dataFile, 0L, SEEK_END);
-    fileSize = ftell(dataFile);
+    int fileSize = ftell(dataFile);
     fclose(dataFile);
 
     return fileSize / rowSize;

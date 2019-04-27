@@ -3,10 +3,15 @@
 
 extern int testInsert();
 extern int testSelect();
+extern void getRequestFromQuery();
 
 int main()
 {
-    testSelect();
+    testInsert();
+    //testSelect();
+    connectToDbSequence();
+    getRequestFromQuery();
+
     return 0;
 }
 

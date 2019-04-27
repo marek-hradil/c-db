@@ -6,7 +6,8 @@
 #include "column.h"
 #include "compiled_column.h"
 
-extern int select(CompiledQuery *compiledQueryMock, Table * tableMock, FILE * dataFileMock);
+extern int select(CompiledQuery *compiledQueryMock, Table * tableMock, FILE * dataFileMock, int filePointer);
+extern int delete(CompiledQuery *compiledQueryMock, Table * tableMock, FILE * dataFileMock, int filePointer);
 
 int testSelect()
 {
@@ -37,6 +38,8 @@ int testSelect()
     Table * table;
     table = malloc(sizeof(Table));
     table->info.columnCount = 3;
+    table->info.rowSize = (sizeof(char[VARCHAR_DEFAULT_LENGTH]) * 2) + sizeof(int);
+    table->info.rowCount = 3;
 
     Column tableColumn1;
     strcpy(tableColumn1.name, "first");
@@ -58,11 +61,23 @@ int testSelect()
     // Run command
     printf("Running select command. \n");
     int i = 0;
+    int pointer = 0;
     for (i = 0; i < 3; i++)
     {
-        select(compiledQueryMock, table, testFile);
+        select(compiledQueryMock, table, testFile, pointer);
+        pointer += table->info.rowSize;
     }
     printf("Command ran. \n");
+
+    //pointer = table->info.rowSize;
+    //delete(compiledQueryMock, table, testFile, pointer);
+
+    //pointer = 0;
+    //for (i = 0; i < 3; i++)
+    //{
+    //    select(compiledQueryMock, table, testFile, pointer);
+    //    pointer += table->info.rowSize;
+    //}
 
     fclose(testFile);
     free(table);
