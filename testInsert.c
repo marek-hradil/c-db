@@ -9,15 +9,24 @@
 extern int insert(CompiledQuery *compiledQueryMock, Table * tableMock, FILE * dataFileMock);
 extern int generateHeadFile(Table * table);
 extern void setDb();
+extern int initTable(char * tableName, Table * table);
 
 int testInsert()
 {
+    Table * table = malloc(sizeof(Table));
+    if (table == NULL) {
+        printf("Not allocated");
+    }
     setDb("./dbs/faceb00k");
-    initTable("test_insert");
+    initTable("test_insert", table);
     FILE * testFile = getDataFile("test_insert", "ab");
 
     // Mock data
     CompiledQuery * compiledQueryMock = malloc(sizeof(CompiledQuery));
+    if (compiledQueryMock == NULL)
+    {
+        printf("Not allocated compiled query mock");
+    }
 
     compiledQueryMock->type = INSERT;
     compiledQueryMock->columnCount = 2;
@@ -35,12 +44,12 @@ int testInsert()
     CompiledColumn column3;
     compiledQueryMock->queryColumns[2] = &column3;
 
-    addColumn("first", VARCHAR, "test_insert");
-    addColumn("second", INT, "test_insert");
-    addColumn("third", VARCHAR, "test_insert");
+    addColumn("first", VARCHAR, table);
+    addColumn("second", INT, table);
+    addColumn("third", VARCHAR, table);
 
     FILE * headerFile = getHeaderFile("test_insert", "rb");
-    Table * table = readHeadTable(headerFile);
+    readHeadTable(headerFile, table);
     fclose(headerFile);
 
     printf("Mocking done. \n");

@@ -65,3 +65,22 @@ int update(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int fi
         }
     }
 }
+
+int executeUpdate(CompiledQuery * compiledQuery, Table * table)
+{
+    int i = 0;
+    int pointer = 0;
+    int status = 0;
+
+    FILE * dataFile = getDataFile(compiledQuery->target, "rb");
+
+    for (i = 0; i < compiledQuery->columnCount; i++)
+    {
+        status = update(compiledQuery, table, dataFile, pointer);
+        pointer += table->info.rowSize;
+    }
+
+    fclose(dataFile);
+
+    return status;
+}

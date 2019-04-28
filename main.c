@@ -7,10 +7,11 @@ extern void getRequestFromQuery();
 
 int main()
 {
-    testInsert();
-    //testSelect();
     connectToDbSequence();
-    getRequestFromQuery();
+    while (1)
+    {
+        getRequestFromQuery();
+    }
 
     return 0;
 }

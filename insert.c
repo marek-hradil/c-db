@@ -3,6 +3,8 @@
 #include "compiled_query.h"
 #include "table.h"
 
+extern FILE * getDataFile(char * tableName, char mode[2]);
+
 int insert(CompiledQuery * compiledQuery, Table * table, FILE * dataFile)
 {
     int i = 0;
@@ -67,4 +69,17 @@ int insert(CompiledQuery * compiledQuery, Table * table, FILE * dataFile)
 
     table->info.rowCount += 1;
     return 1;
+}
+
+int executeInsert(CompiledQuery * compiledQuery, Table * table)
+{
+    int status = 0;
+
+    FILE * dataFile = getDataFile(compiledQuery->target, "rb");
+
+    status = insert(compiledQuery, table, dataFile);
+
+    fclose(dataFile);
+
+    return status;
 }

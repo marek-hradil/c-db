@@ -136,7 +136,7 @@ int connectToDb(DIR * catalogue)
             if (shouldTryAgain == 110) {
                 return -1;
             } else {
-                printf("\nChoose wisely: ");
+                printf("\n$:: ");
             }
         }
     } while (db == NULL);

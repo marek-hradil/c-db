@@ -4,9 +4,11 @@
 #include <ctype.h>
 #include "consts.h"
 #include "compiled_query.h"
+#include "table.h"
 
 extern int getRequestFromSelectQuery();
 extern int getRequestFromInsertQuery();
+extern void log(char * msg);
 
 int getRequestFromQuery()
 {
@@ -42,29 +44,51 @@ int getRequestFromQuery()
         printf("Query parts overflow \n");
     }
 
-    CompiledQuery * compiledQuery;
+    CompiledQuery * compiledQuery = malloc(sizeof(CompiledQuery));
+    for (i = 0; i < 10; i++)
+    {
+        compiledQuery->queryColumns[i] = malloc(sizeof(CompiledColumn));
+        if (compiledQuery->queryColumns[i] == NULL)
+        {
+            log("fuck my life");
+        }
+    }
+    if (compiledQuery == NULL)
+    {
+        log("Compiled query alloc failed");
+    }
+    Table * table = malloc(sizeof(Table));
+    if (table == NULL) {
+        log("Table alloc failed");
+    }
+
     if (strcmp(queryParts[0], "select") == 0)
     {
-        compiledQuery = getRequestFromSelectQuery(queryParts);
+        getRequestFromSelectQuery(queryParts, table, compiledQuery);
+        executeSelect(compiledQuery, table);
     }
     else if (strcmp(queryParts[0], "insert") == 0)
     {
-        compiledQuery = getRequestFromInsertQuery(queryParts);
+        getRequestFromInsertQuery(queryParts, table, compiledQuery);
+        executeInsert(compiledQuery, table);
     }
     else if (strcmp(queryParts[0], "update") == 0)
     {
-        compiledQuery = getRequestFromUpdateQuery(queryParts);
+        getRequestFromUpdateQuery(queryParts, table, compiledQuery);
+        executeUpdate(compiledQuery, table);
     }
     else if (strcmp(queryParts[0], "delete") == 0)
     {
-        compiledQuery = getRequestFromDeleteQuery(queryParts);
+        getRequestFromDeleteQuery(queryParts, table, compiledQuery);
+        executeDelete(compiledQuery, table);
     }
     else if (strcmp(queryParts[0], "create") == 0 && strcmp(queryParts[1], "table") == 0)
     {
-        compiledQuery = getRequestFromCreate(queryParts);
-        printf("%s %s", compiledQuery->queryColumns[0]->name, compiledQuery->queryColumns[0]->value);
+        getRequestFromCreate(queryParts, compiledQuery);
+        create(compiledQuery, table);
     }
 
     free(compiledQuery);
+    free(table);
     return 1;
 }

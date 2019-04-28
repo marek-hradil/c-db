@@ -9,12 +9,15 @@
 #include "compiled_query.h"
 #include "compiled_column.h"
 
-extern int readHeadTable(FILE * headerFile);
+#define DOUBLE_QUOTE 34
+#define SINGLE_QUOTE 39
+
+extern int readHeadTable(FILE * headerFile, Table * table);
 extern FILE * getHeaderFile(char * tableName, char mode[2]);
 extern void removeFirstLastChar(char * temp);
 extern void log(char * msg);
 
-CompiledQuery * getRequestFromInsertQuery(char queryParts[10][50])
+void getRequestFromInsertQuery(char queryParts[10][50], Table * table, CompiledQuery * compiledQuery)
 {
     if (strcmp(queryParts[1], "into") != 0)
     {
@@ -25,27 +28,14 @@ CompiledQuery * getRequestFromInsertQuery(char queryParts[10][50])
     FILE * headerFile = getHeaderFile(queryParts[2], "rb");
     if (headerFile == NULL)
     {
-        log("Table not found");
-        return;
+        log("Unable to open header file.");
     }
-
-    CompiledQuery * compiledQuery = malloc(sizeof(CompiledQuery));
-    int i = 0;
-    for (i = 0; i < 3; i++) {
-        compiledQuery->queryColumns[i] = malloc(sizeof(CompiledColumn));
-        if (compiledQuery->queryColumns[i] == NULL)
-        {
-            log("Query column allocation failed.");
-        }
-    }
-    Table * table = readHeadTable(headerFile);
-    fclose(headerFile);
-
+    readHeadTable(headerFile, table);
     compiledQuery->type = INSERT;
     compiledQuery->target = queryParts[2];
 
     char temp[50];
-    i = 0;
+    int i = 0;
     char * token;
     char * rest = queryParts[3];
     int hasColumnsReferenced = 0;
@@ -71,18 +61,13 @@ CompiledQuery * getRequestFromInsertQuery(char queryParts[10][50])
         while((token = strtok_r(rest, ",", &rest)))
         {
             strcpy(temp, token);
-            /**
-                34 = "
-                39 = '
-            */
-            if (temp[0] == 34 || temp[0] == 39)
+            if (temp[0] == SINGLE_QUOTE || temp[0] == DOUBLE_QUOTE)
             {
                 removeFirstLastChar(temp);
             }
-            strcpy(compiledQuery->queryColumns[i]->name,temp);
+            compiledQuery->queryColumns[i]->name = temp;
             i += 1;
         }
-
         compiledQuery->columnCount = i;
     }
     else
@@ -96,19 +81,16 @@ CompiledQuery * getRequestFromInsertQuery(char queryParts[10][50])
     strcpy(temp, queryParts[valuesIndex]);
     removeFirstLastChar(temp);
     strcpy(rest,temp);
-
     int j = 0;
     while((token = strtok_r(rest, ",", &rest)))
     {
-        strcpy(temp, token);
-        if (temp[0] == 34 || temp[0] == 39)
+        char * val = token;
+        if (val[0] == SINGLE_QUOTE || val[0] == DOUBLE_QUOTE)
         {
-            removeFirstLastChar(temp);
+            removeFirstLastChar(val);
         }
-        compiledQuery->queryColumns[j]->value = temp;
+        compiledQuery->queryColumns[j]->value = val;
         j += 1;
     }
-
-    return compiledQuery;
 }
 

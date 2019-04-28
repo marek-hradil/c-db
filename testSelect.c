@@ -14,14 +14,14 @@ int testSelect()
     printf("Unit test on selecting from data file. \n");
 
     FILE * testFile;
-    testFile = fopen("./test/test_insert.dat", "rb");
+    testFile = fopen("./dbs/faceb00k/test_insert.dat", "rb");
 
     // Mock data
     CompiledQuery * compiledQueryMock;
     compiledQueryMock = malloc(sizeof(CompiledQuery));
 
     compiledQueryMock->type = SELECT;
-    compiledQueryMock->columnCount = 3;
+    compiledQueryMock->columnCount = 2;
 
     CompiledColumn column1;
     column1.name = "first";
@@ -32,7 +32,6 @@ int testSelect()
     compiledQueryMock->queryColumns[1] = &column2;
 
     CompiledColumn column3;
-    column3.name = "third";
     compiledQueryMock->queryColumns[2] = &column3;
 
     Table * table;

@@ -15,30 +15,22 @@
 extern void removeFirstLastChar(char * temp);
 extern void log(char * msg);
 
-CompiledQuery * getRequestFromCreate(char queryParts[10][50])
+void getRequestFromCreate(char queryParts[10][50], CompiledQuery * compiledQuery)
 {
-    CompiledQuery * compiledQuery = malloc(sizeof(CompiledQuery));
-    if (compiledQuery == NULL) {
-        printf("Not allocated");
-    }
     compiledQuery->type = CREATE;
     compiledQuery->target = queryParts[2];
 
     int i = 4;
     int columnsIndex = 0;
-    char temp[50];
-    while (strcmp(queryParts[i][0], PARENTHESE_ENDING) != 0)
+    while (queryParts[i][0] != PARENTHESE_ENDING)
     {
-        printf("works");
         if (columnsIndex % 2 == 0)
         {
-            CompiledColumn * column = malloc(sizeof(CompiledColumn));
-            column->name = queryParts[i];
-            compiledQuery->queryColumns[columnsIndex / 2] = column;
+            compiledQuery->queryColumns[columnsIndex / 2]->name = queryParts[i];
         }
         else
         {
-            strcpy(temp, queryParts[i]);
+            char * temp = queryParts[i];
             int valueLength = strlen(temp);
             if (temp[valueLength] == COMMA)
             {
@@ -57,7 +49,5 @@ CompiledQuery * getRequestFromCreate(char queryParts[10][50])
     }
 
     compiledQuery->columnCount = columnsIndex / 2;
-
-    return compiledQuery;
 }
 

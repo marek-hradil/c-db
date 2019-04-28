@@ -9,12 +9,12 @@
 #include "compiled_query.h"
 #include "compiled_column.h"
 
-extern int readHeadTable(FILE * headerFile);
+extern int readHeadTable(FILE * headerFile, Table * table);
 extern FILE * getHeaderFile(char * tableName, char mode[2]);
 extern void removeFirstLastChar(char * temp);
 extern void log(char * msg);
 
-CompiledQuery * getRequestFromUpdateQuery(char queryParts[10][50])
+void getRequestFromUpdateQuery(char queryParts[10][50], Table * table, CompiledQuery * compiledQuery)
 {
     FILE * headerFile = getHeaderFile(queryParts[1], "rb");
     if (headerFile == NULL)
@@ -22,18 +22,7 @@ CompiledQuery * getRequestFromUpdateQuery(char queryParts[10][50])
         log("Table not found");
         return;
     }
-
-    CompiledQuery * compiledQuery = malloc(sizeof(CompiledQuery));
-    int i = 0;
-    for (i = 0; i < 3; i++) {
-        compiledQuery->queryColumns[i] = malloc(sizeof(CompiledColumn));
-        if (compiledQuery->queryColumns[i] == NULL)
-        {
-            log("Query column allocation failed.");
-        }
-    }
-    Table * table = readHeadTable(headerFile);
-    fclose(headerFile);
+    readHeadTable(headerFile, table);
 
     compiledQuery->type = UPDATE;
     compiledQuery->target = queryParts[1];
@@ -44,17 +33,14 @@ CompiledQuery * getRequestFromUpdateQuery(char queryParts[10][50])
         return;
     }
 
-    char temp[50];
-    i = 0;
+    int i = 0;
     char * token;
     char * rest = queryParts[3];
-    strcpy(temp, queryParts[3]);
-    strcpy(rest,temp);
 
     int j = 0;
     while((token = strtok_r(rest, ",=", &rest)))
     {
-        strcpy(temp, token);
+        char * temp = token;
         if (temp[0] == 34 || temp[0] == 39)
         {
             removeFirstLastChar(temp);
@@ -62,16 +48,16 @@ CompiledQuery * getRequestFromUpdateQuery(char queryParts[10][50])
 
         if (j % 2 == 0)
         {
-            strcpy(compiledQuery->queryColumns[j/2]->name,temp);
+            compiledQuery->queryColumns[j/2]->name = temp;
         }
         else
         {
-            strcpy(compiledQuery->queryColumns[j/2]->value,temp);
+            compiledQuery->queryColumns[j/2]->value = temp;
         }
 
         j += 1;
     }
 
-    return compiledQuery;
+    printf("out");
 }
 

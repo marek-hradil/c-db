@@ -8,16 +8,16 @@
 #include "query_types.h"
 #include "compiled_query.h"
 
-extern int readHeadTable(FILE * headerFile);
+extern int readHeadTable(FILE * headerFile, Table * table);
 extern FILE * getHeaderFile(char * tableName, char mode[2]);
+extern void log(char * msg);
 
-CompiledQuery * getRequestFromSelectQuery(char queryParts[10][50])
+void getRequestFromSelectQuery(char queryParts[10][50], Table * table, CompiledQuery * compiledQuery)
 {
-    CompiledQuery * compiledQuery = malloc(sizeof(CompiledQuery));
     compiledQuery->type = SELECT;
     if (strcmp(queryParts[2], "from") != 0)
     {
-        printf("Target of query not found. Aborting... \n");
+        log("FROM keyword not found.\n");
         return;
     }
 
@@ -26,11 +26,11 @@ CompiledQuery * getRequestFromSelectQuery(char queryParts[10][50])
     FILE * headerFile = getHeaderFile(queryParts[3], "rb");
     if (headerFile == NULL)
     {
-        printf("Table not found");
+        log("Table not found.");
         return;
     }
 
-    Table * table = readHeadTable(headerFile);
+    readHeadTable(headerFile, table);
 
     char * token;
     char * rest = queryParts[1];
@@ -46,7 +46,7 @@ CompiledQuery * getRequestFromSelectQuery(char queryParts[10][50])
         {
             if (strcmp(temp, table->columns[j]->name) == 0)
             {
-                compiledQuery->queryColumns[i]->name = temp;
+                strcpy(compiledQuery->queryColumns[i]->name, temp);
                 isPaired = 1;
                 i++;
             }
@@ -58,16 +58,11 @@ CompiledQuery * getRequestFromSelectQuery(char queryParts[10][50])
         }
     }
 
-    fclose(headerFile);
-    free(table);
-
     if (i != 0) {
         compiledQuery->columnCount = i;
     } else {
         printf("No column found. Aborting...");
         return;
     }
-
-    return compiledQuery;
 }
 

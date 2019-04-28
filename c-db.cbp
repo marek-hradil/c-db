@@ -36,6 +36,12 @@
 		<Unit filename="compiled_column.h" />
 		<Unit filename="compiled_query.h" />
 		<Unit filename="consts.h" />
+		<Unit filename="create.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="createQueryParser.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="dbAccessor.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -43,6 +49,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="delete.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="deleteQueryParser.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="expression.h" />
@@ -82,6 +91,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="update.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="updateQueryParser.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

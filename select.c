@@ -4,10 +4,13 @@
 #include "compiled_query.h"
 #include "table.h"
 
+extern void log(char * msg);
+
 int select(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int filePointer)
 {
     rewind(dataFile);
-    fseek(dataFile, filePointer, SEEK_CUR);
+    fseek(dataFile, filePointer, SEEK_SET);
+    printf("{\n");
 
     int i = 0;
     for (i = 0; i < table->info.columnCount; i++)
@@ -32,24 +35,30 @@ int select(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int fi
                     fread(val, sizeof(char[VARCHAR_DEFAULT_LENGTH]), 1, dataFile);
                     if (val[0] != '\0')
                     {
-                        printf("| %s |", val);
+                        printf("\t\"%s\": \"%s\"", table->columns[i]->name, val);
                     }
                     else
                     {
-                        printf("| NULL |");
+                        printf("\t\"%s\": null", table->columns[i]->name);
                     }
                 } break;
 
                 case INT: {
                     int val;
                     fread(&val, sizeof(int), 1, dataFile);
-                    printf("| %d |", val);
+                    printf("\t\"%s\": %d", table->columns[i]->name, val);
                 } break;
 
                 default:
                     printf("Unknown column type. Aborting.");
                     return -1;
             }
+
+            if (compiledQuery->columnCount - 1 != j && isPaired)
+            {
+                printf(",");
+            }
+            printf("\n");
         }
 
         if (isPaired == 0)
@@ -71,36 +80,39 @@ int select(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int fi
         }
     }
 
-    printf("\n");
+    printf("}");
 
     return 1;
 }
 
-int executeSelect(CompiledQuery * compiledQuery)
+int executeSelect(CompiledQuery * compiledQuery, Table * table)
 {
-    printf("here");
     int i = 0;
     int pointer = 0;
     int status = 0;
 
-    printf("1 %s", compiledQuery->target);
-    FILE * headerFile = getHeaderFile(compiledQuery->target, "rb");
-    printf("2");
-    Table * table = readHeadTable(headerFile);
-    printf("3");
     FILE * dataFile = getDataFile(compiledQuery->target, "rb");
-    printf("4");
-
-    for (i = 0; i < compiledQuery->columnCount; i++)
+    if (dataFile == NULL)
     {
-        printf("%s %d \n", compiledQuery->queryColumns[i]->name, compiledQuery->columnCount);
-        status = select(compiledQuery, table, dataFile, pointer);
-        pointer += table->info.rowSize;
+        log("Couldn't open data file");
+        return;
     }
 
-    fclose(headerFile);
+    table->info.rowCount = getRowCount(dataFile, table->info.rowSize);
+
+    printf("[");
+    for (i = 0; i < table->info.rowCount; i++)
+    {
+        status = select(compiledQuery, table, dataFile, pointer);
+        if (table->info.rowCount -1 != i)
+        {
+            printf(",");
+        }
+        pointer += table->info.rowSize;
+    }
+    printf("]\n");
+
     fclose(dataFile);
-    free(table);
 
     return status;
 }

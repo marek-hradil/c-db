@@ -3,6 +3,8 @@
 #include "table.h"
 #include "compiled_query.h"
 
+extern FILE * getDataFile(char * tableName, char mode[2]);
+
 int delete(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int filePointer)
 {
     rewind(dataFile);
@@ -26,4 +28,23 @@ int delete(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int fi
 
     ftruncate(fileno(dataFile), tableSize - table->info.rowSize);
     table->info.rowCount -= 1;
+}
+
+int executeDelete(CompiledQuery * compiledQuery, Table * table)
+{
+    int i = 0;
+    int pointer = 0;
+    int status = 0;
+
+    FILE * dataFile = getDataFile(compiledQuery->target, "rb");
+
+    for (i = 0; i < compiledQuery->columnCount; i++)
+    {
+        status = delete(compiledQuery, table, dataFile, pointer);
+        pointer += table->info.rowSize;
+    }
+
+    fclose(dataFile);
+
+    return status;
 }
