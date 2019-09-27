@@ -3,7 +3,7 @@
 #include "table.h"
 #include "compiled_query.h"
 
-extern FILE * getDataFile(char * tableName, char mode[2]);
+extern FILE * getDataFile(char * tableName, char * mode);
 
 int delete(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int filePointer)
 {

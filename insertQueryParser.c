@@ -13,7 +13,7 @@
 #define SINGLE_QUOTE 39
 
 extern int readHeadTable(FILE * headerFile, Table * table);
-extern FILE * getHeaderFile(char * tableName, char mode[2]);
+extern FILE * getHeaderFile(char * tableName, char * mode);
 extern void removeFirstLastChar(char * temp);
 extern void log(char * msg);
 
@@ -52,11 +52,9 @@ void getRequestFromInsertQuery(char queryParts[10][50], Table * table, CompiledQ
     else if (strcmp(queryParts[4], "values") == 0)
     {
         hasColumnsReferenced = 1;
-        strcpy(temp, queryParts[3]);
-        removeFirstLastChar(temp);
+        removeFirstLastChar(rest);
 
         i = 0;
-        rest = temp;
 
         while((token = strtok_r(rest, ",", &rest)))
         {
@@ -65,7 +63,7 @@ void getRequestFromInsertQuery(char queryParts[10][50], Table * table, CompiledQ
             {
                 removeFirstLastChar(temp);
             }
-            compiledQuery->queryColumns[i]->name = temp;
+            strcpy(compiledQuery->queryColumns[i]->name,temp);
             i += 1;
         }
         compiledQuery->columnCount = i;
@@ -84,12 +82,12 @@ void getRequestFromInsertQuery(char queryParts[10][50], Table * table, CompiledQ
     int j = 0;
     while((token = strtok_r(rest, ",", &rest)))
     {
-        char * val = token;
-        if (val[0] == SINGLE_QUOTE || val[0] == DOUBLE_QUOTE)
+        strcpy(temp, token);
+        if (temp[0] == SINGLE_QUOTE || temp[0] == DOUBLE_QUOTE)
         {
-            removeFirstLastChar(val);
+            removeFirstLastChar(temp);
         }
-        compiledQuery->queryColumns[j]->value = val;
+        strcpy(compiledQuery->queryColumns[j]->value,temp);
         j += 1;
     }
 }

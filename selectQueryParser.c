@@ -9,7 +9,7 @@
 #include "compiled_query.h"
 
 extern int readHeadTable(FILE * headerFile, Table * table);
-extern FILE * getHeaderFile(char * tableName, char mode[2]);
+extern FILE * getHeaderFile(char * tableName, char * mode);
 extern void log(char * msg);
 
 void getRequestFromSelectQuery(char queryParts[10][50], Table * table, CompiledQuery * compiledQuery)
@@ -61,8 +61,10 @@ void getRequestFromSelectQuery(char queryParts[10][50], Table * table, CompiledQ
     if (i != 0) {
         compiledQuery->columnCount = i;
     } else {
-        printf("No column found. Aborting...");
+        log("No column found. Aborting...");
         return;
     }
+
+    log("Select query parsed");
 }
 

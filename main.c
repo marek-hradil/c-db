@@ -7,6 +7,8 @@ extern void getRequestFromQuery();
 
 int main()
 {
+    // testInsert();
+    // testSelect();
     connectToDbSequence();
     while (1)
     {

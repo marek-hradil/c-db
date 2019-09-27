@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "compiled_query.h"
 #include "table.h"
 
-extern FILE * getDataFile(char * tableName, char mode[2]);
+extern FILE * getDataFile(char * tableName, char * mode);
+extern void log(char * msg);
 
 int insert(CompiledQuery * compiledQuery, Table * table, FILE * dataFile)
 {
@@ -73,13 +75,20 @@ int insert(CompiledQuery * compiledQuery, Table * table, FILE * dataFile)
 
 int executeInsert(CompiledQuery * compiledQuery, Table * table)
 {
+    log("Executing insert.");
     int status = 0;
 
-    FILE * dataFile = getDataFile(compiledQuery->target, "rb");
+    FILE * dataFile = fopen("./dbs/faceb00k/test_insert.dat","ab");
+    if (dataFile == NULL)
+    {
+        log("Couldn't open data file");
+    }
 
     status = insert(compiledQuery, table, dataFile);
 
     fclose(dataFile);
+
+    log("Insert executed");
 
     return status;
 }

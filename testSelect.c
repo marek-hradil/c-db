@@ -6,15 +6,14 @@
 #include "column.h"
 #include "compiled_column.h"
 
+extern FILE * getDataFile(char * tableName, char * mode);
+extern void log(char * msg);
 extern int select(CompiledQuery *compiledQueryMock, Table * tableMock, FILE * dataFileMock, int filePointer);
 extern int delete(CompiledQuery *compiledQueryMock, Table * tableMock, FILE * dataFileMock, int filePointer);
 
 int testSelect()
 {
-    printf("Unit test on selecting from data file. \n");
-
-    FILE * testFile;
-    testFile = fopen("./dbs/faceb00k/test_insert.dat", "rb");
+    log("Unit test on selecting from data file. \n");
 
     // Mock data
     CompiledQuery * compiledQueryMock;
@@ -22,6 +21,7 @@ int testSelect()
 
     compiledQueryMock->type = SELECT;
     compiledQueryMock->columnCount = 2;
+    compiledQueryMock->target = "test_insert";
 
     CompiledColumn column1;
     column1.name = "first";
@@ -38,7 +38,6 @@ int testSelect()
     table = malloc(sizeof(Table));
     table->info.columnCount = 3;
     table->info.rowSize = (sizeof(char[VARCHAR_DEFAULT_LENGTH]) * 2) + sizeof(int);
-    table->info.rowCount = 3;
 
     Column tableColumn1;
     strcpy(tableColumn1.name, "first");
@@ -55,18 +54,12 @@ int testSelect()
     tableColumn3.type = VARCHAR;
     table->columns[2] = &tableColumn3;
 
-    printf("Mocking done. \n");
+    log("Mocking done. \n");
 
     // Run command
-    printf("Running select command. \n");
-    int i = 0;
-    int pointer = 0;
-    for (i = 0; i < 3; i++)
-    {
-        select(compiledQueryMock, table, testFile, pointer);
-        pointer += table->info.rowSize;
-    }
-    printf("Command ran. \n");
+    log("Running select command. \n");
+    executeSelect(compiledQueryMock, table);
+    log("Command ran. \n");
 
     //pointer = table->info.rowSize;
     //delete(compiledQueryMock, table, testFile, pointer);
@@ -78,7 +71,6 @@ int testSelect()
     //    pointer += table->info.rowSize;
     //}
 
-    fclose(testFile);
     free(table);
     free(compiledQueryMock);
 

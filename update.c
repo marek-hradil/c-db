@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "compiled_query.h"
 #include "table.h"
+
+extern FILE * getDataFile(char * tableName, char * mode);
 
 int update(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int filePointer)
 {
@@ -64,6 +67,8 @@ int update(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int fi
             }
         }
     }
+
+    return 1;
 }
 
 int executeUpdate(CompiledQuery * compiledQuery, Table * table)
@@ -72,7 +77,7 @@ int executeUpdate(CompiledQuery * compiledQuery, Table * table)
     int pointer = 0;
     int status = 0;
 
-    FILE * dataFile = getDataFile(compiledQuery->target, "rb");
+    FILE * dataFile = getDataFile(compiledQuery->target, "r+b");
 
     for (i = 0; i < compiledQuery->columnCount; i++)
     {

@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1556485304 source:c:\users\techfides\desktop\ownprojects\c-db\main.c
+1556795104 source:c:\users\techfides\desktop\ownprojects\c-db\main.c
 	<stdio.h>
 	<stdlib.h>
 
-1556267878 source:c:\users\techfides\desktop\ownprojects\c-db\dbaccessor.c
+1556792793 source:c:\users\techfides\desktop\ownprojects\c-db\dbaccessor.c
 	<stdio.h>
 	<stdlib.h>
 	<dirent.h>
@@ -11,7 +11,7 @@
 	"file_paths.h"
 	"file_type.h"
 
-1556483375 source:c:\users\techfides\desktop\ownprojects\c-db\queryparser.c
+1556792384 source:c:\users\techfides\desktop\ownprojects\c-db\queryparser.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -20,7 +20,7 @@
 	"compiled_query.h"
 	"table.h"
 
-1556445303 source:c:\users\techfides\desktop\ownprojects\c-db\selectqueryparser.c
+1556792050 source:c:\users\techfides\desktop\ownprojects\c-db\selectqueryparser.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -44,7 +44,7 @@
 
 1554146996 c:\users\techfides\desktop\ownprojects\c-db\table_info.h
 
-1556445467 source:c:\users\techfides\desktop\ownprojects\c-db\dbcreator.c
+1556793124 source:c:\users\techfides\desktop\ownprojects\c-db\dbcreator.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -71,7 +71,7 @@
 	"column_types.h"
 	"column.h"
 
-1556445373 source:c:\users\techfides\desktop\ownprojects\c-db\testinsert.c
+1556781564 source:c:\users\techfides\desktop\ownprojects\c-db\testinsert.c
 	<stdio.h>
 	<stdlib.h>
 	"compiled_query.h"
@@ -80,20 +80,20 @@
 	"column.h"
 	"compiled_column.h"
 
-1556487192 source:c:\users\techfides\desktop\ownprojects\c-db\insert.c
+1556794883 source:c:\users\techfides\desktop\ownprojects\c-db\insert.c
 	<stdio.h>
 	<stdlib.h>
 	"compiled_query.h"
 	"table.h"
 
-1556487057 source:c:\users\techfides\desktop\ownprojects\c-db\select.c
+1556795407 source:c:\users\techfides\desktop\ownprojects\c-db\select.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"compiled_query.h"
 	"table.h"
 
-1556487075 source:c:\users\techfides\desktop\ownprojects\c-db\testselect.c
+1556620098 source:c:\users\techfides\desktop\ownprojects\c-db\testselect.c
 	<stdio.h>
 	<stdlib.h>
 	"compiled_query.h"
@@ -102,19 +102,20 @@
 	"column.h"
 	"compiled_column.h"
 
-1556408953 source:c:\users\techfides\desktop\ownprojects\c-db\update.c
+1556620147 source:c:\users\techfides\desktop\ownprojects\c-db\update.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	"compiled_query.h"
 	"table.h"
 
-1556408898 source:c:\users\techfides\desktop\ownprojects\c-db\delete.c
+1556620003 source:c:\users\techfides\desktop\ownprojects\c-db\delete.c
 	<stdio.h>
 	<stdlib.h>
 	"table.h"
 	"compiled_query.h"
 
-1556120543 source:c:\users\techfides\desktop\ownprojects\c-db\logger.c
+1556616658 source:c:\users\techfides\desktop\ownprojects\c-db\logger.c
 	<stdio.h>
 	<time.h>
 
@@ -124,7 +125,7 @@
 	<string.h>
 	"column_types.h"
 
-1556484296 source:c:\users\techfides\desktop\ownprojects\c-db\insertqueryparser.c
+1556795089 source:c:\users\techfides\desktop\ownprojects\c-db\insertqueryparser.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -135,7 +136,7 @@
 	"compiled_query.h"
 	"compiled_column.h"
 
-1556487992 source:c:\users\techfides\desktop\ownprojects\c-db\updatequeryparser.c
+1556620108 source:c:\users\techfides\desktop\ownprojects\c-db\updatequeryparser.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -146,7 +147,7 @@
 	"compiled_query.h"
 	"compiled_column.h"
 
-1556442848 source:c:\users\techfides\desktop\ownprojects\c-db\deletequeryparser.c
+1556620013 source:c:\users\techfides\desktop\ownprojects\c-db\deletequeryparser.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

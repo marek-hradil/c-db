@@ -10,8 +10,8 @@
 #include "file_type.h"
 #include "compiled_query.h"
 
-extern FILE * getHeaderFile(char * tableName, char mode[2]);
-extern FILE * getDataFile(char * tableName, char mode[2]);
+extern FILE * getHeaderFile(char * tableName, char * mode);
+extern FILE * getDataFile(char * tableName, char * mode);
 extern int removeDataFile(char * tableName);
 extern int removeHeaderFile(char * tableName);
 extern void log(char * msg);
@@ -21,7 +21,7 @@ int generateHeadFile(Table * table)
     FILE * newHeaderFile = getHeaderFile(table->info.name, "wb");
     if (newHeaderFile == NULL)
     {
-        printf("Could not create new header file");
+        log("Could not create new header file");
 
         return -1;
     }
@@ -29,7 +29,7 @@ int generateHeadFile(Table * table)
     fwrite(&table->info, sizeof(TableInfo), 1, newHeaderFile);
     fclose(newHeaderFile);
 
-    printf("Header file created successfully");
+    log("Header file created successfully");
 
     return 0;
 }
@@ -40,14 +40,14 @@ int generateDataFile(Table * table)
     newDataFile = getDataFile(table->info.name, "wb");
 
     if (newDataFile == NULL) {
-        printf("Could not create new data file");
+        log("Could not create new data file");
 
         return -1;
     }
 
     fclose(newDataFile);
 
-    printf("Data file created successfully");
+    log("Data file created successfully");
 
     return 0;
 }
@@ -134,7 +134,6 @@ int getRowCount(FILE * dataFile, int rowSize)
 {
     fseek(dataFile, 0L, SEEK_END);
     int fileSize = ftell(dataFile);
-    fclose(dataFile);
 
     return fileSize / rowSize;
 }

@@ -10,7 +10,7 @@
 #include "compiled_column.h"
 
 extern int readHeadTable(FILE * headerFile, Table * table);
-extern FILE * getHeaderFile(char * tableName, char mode[2]);
+extern FILE * getHeaderFile(char * tableName, char * mode);
 extern void removeFirstLastChar(char * temp);
 extern void log(char * msg);
 

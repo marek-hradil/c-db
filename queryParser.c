@@ -41,7 +41,7 @@ int getRequestFromQuery()
 
     if (i > 19)
     {
-        printf("Query parts overflow \n");
+        log("Query parts overflow \n");
     }
 
     CompiledQuery * compiledQuery = malloc(sizeof(CompiledQuery));
@@ -50,7 +50,7 @@ int getRequestFromQuery()
         compiledQuery->queryColumns[i] = malloc(sizeof(CompiledColumn));
         if (compiledQuery->queryColumns[i] == NULL)
         {
-            log("fuck my life");
+            log("Compiled column not allocated");
         }
     }
     if (compiledQuery == NULL)

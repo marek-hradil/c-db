@@ -5,6 +5,7 @@
 #include "table.h"
 
 extern void log(char * msg);
+extern FILE * getDataFile(char * tableName, char * mode);
 
 int select(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int filePointer)
 {
@@ -50,7 +51,7 @@ int select(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int fi
                 } break;
 
                 default:
-                    printf("Unknown column type. Aborting.");
+                    log("Unknown column type. Aborting.");
                     return -1;
             }
 
@@ -74,7 +75,7 @@ int select(CompiledQuery * compiledQuery, Table * table, FILE * dataFile, int fi
                 } break;
 
                 default:
-                    printf("Unknown column type. Aborting.");
+                    log("Unknown column type. Aborting.");
                     return -1;
             }
         }

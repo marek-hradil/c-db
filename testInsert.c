@@ -6,30 +6,31 @@
 #include "column.h"
 #include "compiled_column.h"
 
-extern int insert(CompiledQuery *compiledQueryMock, Table * tableMock, FILE * dataFileMock);
+extern int insert(CompiledQuery * compiledQueryMock, Table * tableMock, FILE * dataFileMock);
 extern int generateHeadFile(Table * table);
 extern void setDb();
 extern int initTable(char * tableName, Table * table);
+extern void log(char * msg);
 
 int testInsert()
 {
     Table * table = malloc(sizeof(Table));
     if (table == NULL) {
-        printf("Not allocated");
+        log("Not allocated table");
     }
     setDb("./dbs/faceb00k");
     initTable("test_insert", table);
-    FILE * testFile = getDataFile("test_insert", "ab");
 
     // Mock data
     CompiledQuery * compiledQueryMock = malloc(sizeof(CompiledQuery));
     if (compiledQueryMock == NULL)
     {
-        printf("Not allocated compiled query mock");
+        log("Not allocated compiled query mock");
     }
 
     compiledQueryMock->type = INSERT;
     compiledQueryMock->columnCount = 2;
+    compiledQueryMock->target = "test_insert";
 
     CompiledColumn column1;
     column1.name = "first";
@@ -52,38 +53,17 @@ int testInsert()
     readHeadTable(headerFile, table);
     fclose(headerFile);
 
-    printf("Mocking done. \n");
+    log("Mocking done. \n");
 
     // Run command
-    printf("Running insert command. \n");
+    log("Running insert command. \n");
     int i = 0;
     for (i = 0; i < 3; i++)
     {
-        insert(compiledQueryMock, table, testFile);
+        executeInsert(compiledQueryMock, table);
     }
-    printf("Command ran. \n");
+    log("Command ran. \n");
 
-    fclose(testFile);
-
-    // Read back values
-    testFile = fopen("./dbs/faceb00k/test_insert.dat", "rb");
-
-    for (i = 0; i < 3; i++)
-    {
-        char val1[70];
-        fread(val1, sizeof(char[70]), 1, testFile);
-
-        int val2;
-        fread(&val2, sizeof(int), 1, testFile);
-
-        char val3[70];
-        fread(val3, sizeof(char[70]), 1, testFile);
-
-        // Print
-        printf("first: %s, second: %d, third: %s \n", val1, val2, val3);
-    }
-
-    fclose(testFile);
     free(table);
     free(compiledQueryMock);
 

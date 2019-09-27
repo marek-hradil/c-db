@@ -21,6 +21,19 @@ char * getDb()
     return ptr;
 }
 
+int createDb(char * name)
+{
+    char path[100];
+    strcpy(path, "./");
+    strcat(path, CATALOGUE_DIR);
+    strcat(path, "/");
+    strcat(path, name);
+    // TODO: change 777, to smth safer
+    mkdir(path, 0777);
+
+    return 1;
+}
+
 void setFilePath(char * tableName, int type, char tablePath[100])
 {
     strcpy(tablePath, databasePath);
@@ -30,6 +43,7 @@ void setFilePath(char * tableName, int type, char tablePath[100])
         strcat(tablePath, "_HEAD");
     }
     strcat(tablePath, ".dat");
+    printf("%s\n", tablePath);
 }
 
 int removeHeaderFile(char * tableName)
@@ -89,21 +103,22 @@ FILE * getDataFile (char * tableName, char * mode)
 int listDbsFromCatalogue (DIR *catalogue)
 {
     struct dirent *db;
-    if (catalogue!=NULL)
+    if (catalogue != NULL)
     {
         while(db = readdir(catalogue))
         {
-            if (db->d_type == DT_DIR)
+            if (db->d_type == DT_DIR && strcmp(db->d_name, ".") && strcmp(db->d_name, ".."))
             {
                 printf("\t %s \n",db->d_name);
             }
         }
+
         free(db);
         return 0;
     }
     else
     {
-        printf("ERROR OPENIN DIRECTORY");
+        log("Couldn't open dbs directory.");
         return -1;
     }
 }
@@ -111,7 +126,7 @@ int listDbsFromCatalogue (DIR *catalogue)
 int connectToDb(DIR * catalogue)
 {
     char dbName[256];
-    printf("\nChoose wisely: ");
+    printf("\n$:: ");
 
     DIR * db;
     do {
@@ -141,7 +156,7 @@ int connectToDb(DIR * catalogue)
         }
     } while (db == NULL);
     free(db);
-    printf("\nConnected.");
+    log("Connected.");
 
     return 0;
 }

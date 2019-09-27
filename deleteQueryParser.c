@@ -8,7 +8,7 @@
 #include "compiled_column.h"
 #include "table.h"
 
-extern FILE * getHeaderFile(char * tableName, char mode[2]);
+extern FILE * getHeaderFile(char * tableName, char * mode);
 extern void log(char * msg);
 
 void getRequestFromDeleteQuery(char queryParts[10][50], Table * table, CompiledQuery * compiledQuery)

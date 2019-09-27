@@ -8,5 +8,7 @@ void log(char * msg)
 
   time(&rawtime);
   timeinfo = localtime(&rawtime);
-  printf("[%s] %s\n", asctime(timeinfo), msg);
+  char * stamp = asctime(timeinfo);
+  stamp[strlen(stamp) - 1] = '\0';
+  printf("[%s] %s\n", stamp, msg);
 }
